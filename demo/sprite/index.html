@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script src="../../dist/index.js"></script>
+    <script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var testAction1 = new Action(context, {src:'./img/walk.png',audioSrc: './audio/audio.wav',width:80, height:91,col:0, row:0});
+    testAction1.load();
+    var timmer = setInterval(function() {
+      context.clearRect(0,0,1000,1000)
+      testAction1.play(0,0);
+    }, 200);
+
+      // var a = new Sprite();
+      // a.createAction(0, 0, 80, 91, './img/walk.png');
+    </script>
+  </body>
+</html>
