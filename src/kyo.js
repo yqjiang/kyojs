@@ -1,4 +1,5 @@
 'use strict';
-import Action from './sprite/action.js';
-import Sprite from './sprite';
-window.Action = Action;
+import Loader from './loader/index.js';
+window.kyo = {
+  Loader: Loader
+}

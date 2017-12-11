@@ -1,13 +1,11 @@
 'use strict';
 
-var _action = require('./sprite/action.js');
+var _index = require('./loader/index.js');
 
-var _action2 = _interopRequireDefault(_action);
-
-var _sprite = require('./sprite');
-
-var _sprite2 = _interopRequireDefault(_sprite);
+var _index2 = _interopRequireDefault(_index);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-window.Action = _action2.default;
+window.kyo = {
+  Loader: _index2.default
+};

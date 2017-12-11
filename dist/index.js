@@ -46,9 +46,11 @@
 
 	__webpack_require__(1);
 	__webpack_require__(2);
-	__webpack_require__(5);
+	__webpack_require__(4);
 	__webpack_require__(3);
-	module.exports = __webpack_require__(4);
+	__webpack_require__(5);
+	__webpack_require__(6);
+	module.exports = __webpack_require__(7);
 
 
 /***/ }),
@@ -63,20 +65,133 @@
 
 	'use strict';
 
-	var _action = __webpack_require__(3);
+	var _index = __webpack_require__(3);
 
-	var _action2 = _interopRequireDefault(_action);
-
-	var _sprite = __webpack_require__(4);
-
-	var _sprite2 = _interopRequireDefault(_sprite);
+	var _index2 = _interopRequireDefault(_index);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	window.Action = _action2.default;
+	window.kyo = {
+	  Loader: _index2.default
+	};
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 source loaders for kyojs
+	 **/
+	var Loader = function () {
+	  function Loader(configs) {
+	    _classCallCheck(this, Loader);
+
+	    this.configs = configs;
+	    this.sources = { images: {}, animate: {}, video: {}, audio: {} };
+	    this.events = {};
+	  }
+
+	  /**
+	   * @param  {sources} the source of images.
+	   *  [{url: the image source url
+	   *    name: the source name for get the source
+	   *  }]
+	   * @return 
+	   */
+
+
+	  _createClass(Loader, [{
+	    key: 'loadImages',
+	    value: function loadImages(sources) {
+	      var _this2 = this;
+
+	      var length = sources.length;
+	      var loaded = 0;
+	      var _this = this;
+
+	      var _loop = function _loop(i) {
+	        var image = new Image();
+	        image.src = sources[i].url;
+	        _this2.sources.images[sources[i].name] = image;
+	        image.addEventListener('load', function () {
+	          loaded++;
+	          if (_this.events.imageLoaded) {
+	            _this.events.imageLoaded();
+	          }
+	          image.removeEventListener('load', function () {});
+	        });
+	      };
+
+	      for (var i = 0; i < length; i++) {
+	        _loop(i);
+	      }
+	    }
+
+	    // 删除某项资源
+
+	  }, {
+	    key: 'delete',
+	    value: function _delete(id) {}
+	  }, {
+	    key: 'on',
+	    value: function on(event, func) {
+	      switch (event) {
+	        case 'imageLoaded':
+	          this.events.imageLoaded = func;
+	        default:
+	          return;
+	      }
+	    }
+	    // 删除所有资源
+
+	  }, {
+	    key: 'destroy',
+	    value: function destroy() {}
+	  }]);
+
+	  return Loader;
+	}();
+
+	exports.default = Loader;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+	// 'use strict';
+	// const onTime = function() {
+	//
+	// };
+	//
+	// class Clock {
+	//   function constructor() {
+	//     this.time = 0;
+	//     this.timer = setInterval(() => {
+	//       this.time += 10;
+	//       this.onTi
+	//     }, 10);
+	//   }
+	// }
+	"use strict";
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -96,7 +211,7 @@
 	var Action = function () {
 	  // 图源的起始行、列、宽，高, 帧数, 源图，音效，是否竖排，音效是否循环；
 	  // context, x, y, row, col, width, height, src, audioSrc，vert, audioReplay
-	  function Action(context, options) {
+	  function Action(kyo, context, options) {
 	    _classCallCheck(this, Action);
 
 	    this.context = context;
@@ -105,11 +220,9 @@
 	    this.width = options.width;
 	    this.height = options.height;
 	    this.src = options.src;
-	    this.audioSrc = options.audioSrc;
 	    this.verticel = options.vert;
-	    this.audioReplay = options.audioReplay;
-	    this.animationSpeed = options.animationSpeed;
 	    this.frameNums = 1;
+	    this.clock = kyo.clock;
 
 	    this.img = new Image();
 	    this.audio = new Audio();
@@ -130,33 +243,15 @@
 	      this.img.onload = function () {
 	        _this.imgloaded = true;
 	        _this.frameNums = _this.verticel ? Math.floor(_this.img.height / _this.height) : Math.floor(_this.img.width / _this.width);
-	        if (_this.audioloaded || !_this.audioSrc) {
-	          _this.loaded = true;
-	          cb && cb();
-	        }
+	        _this.loaded = true;
+	        cb && cb();
 	      };
 
-	      if (this.audioSrc) {
-	        this.audio.onload = function () {
-	          _this.audioloaded = true;
-	          if (_this.imgloaded) {
-	            _this.loaded = true;
-	            cb && cb();
-	          }
-	        };
-	      }
-
 	      this.img.src = this.src;
-	      this.audio.src = this.audioSrc;
-	      if (this.audioSrc) {
-	        this.audio.src = this.audioSrc;
-	      }
 	    }
 	  }, {
 	    key: 'play',
 	    value: function play(x, y) {
-	      var _this2 = this;
-
 	      if (!this.frameNums) {
 	        return false;
 	      }
@@ -167,14 +262,6 @@
 	      var imgX = this.verticel ? this.row * this.width : (this.row + this.frameIndex) * this.width;
 	      var imgY = this.verticel ? (this.col + this.frameIndex) * this.height : this.col * this.height;
 	      this.context.drawImage(this.img, imgX, imgY, this.width, this.height, x, y, this.width, this.height);
-	      if (this.audioSrc && !this.audioPlaying && (!this.audioPlayed || this.audioReplay)) {
-	        this.audio.play();
-	        this.audioPlaying = true;
-	        this.audio.addEventListener('end', function () {
-	          _this2.audioPlaying = false;
-	          _this2.audioPlayed = true;
-	        });
-	      }
 	      this.frameIndex++;
 	      this.frameIndex %= this.frameNums;
 	    }
@@ -192,13 +279,7 @@
 	exports.default = Action;
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-/***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports) {
 
 	"use strict";

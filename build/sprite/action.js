@@ -15,7 +15,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Action = function () {
   // 图源的起始行、列、宽，高, 帧数, 源图，音效，是否竖排，音效是否循环；
   // context, x, y, row, col, width, height, src, audioSrc，vert, audioReplay
-  function Action(context, options) {
+  function Action(kyo, context, options) {
     _classCallCheck(this, Action);
 
     this.context = context;
@@ -24,11 +24,9 @@ var Action = function () {
     this.width = options.width;
     this.height = options.height;
     this.src = options.src;
-    this.audioSrc = options.audioSrc;
     this.verticel = options.vert;
-    this.audioReplay = options.audioReplay;
-    this.animationSpeed = options.animationSpeed;
     this.frameNums = 1;
+    this.clock = kyo.clock;
 
     this.img = new Image();
     this.audio = new Audio();
@@ -49,33 +47,15 @@ var Action = function () {
       this.img.onload = function () {
         _this.imgloaded = true;
         _this.frameNums = _this.verticel ? Math.floor(_this.img.height / _this.height) : Math.floor(_this.img.width / _this.width);
-        if (_this.audioloaded || !_this.audioSrc) {
-          _this.loaded = true;
-          cb && cb();
-        }
+        _this.loaded = true;
+        cb && cb();
       };
 
-      if (this.audioSrc) {
-        this.audio.onload = function () {
-          _this.audioloaded = true;
-          if (_this.imgloaded) {
-            _this.loaded = true;
-            cb && cb();
-          }
-        };
-      }
-
       this.img.src = this.src;
-      this.audio.src = this.audioSrc;
-      if (this.audioSrc) {
-        this.audio.src = this.audioSrc;
-      }
     }
   }, {
     key: 'play',
     value: function play(x, y) {
-      var _this2 = this;
-
       if (!this.frameNums) {
         return false;
       }
@@ -86,14 +66,6 @@ var Action = function () {
       var imgX = this.verticel ? this.row * this.width : (this.row + this.frameIndex) * this.width;
       var imgY = this.verticel ? (this.col + this.frameIndex) * this.height : this.col * this.height;
       this.context.drawImage(this.img, imgX, imgY, this.width, this.height, x, y, this.width, this.height);
-      if (this.audioSrc && !this.audioPlaying && (!this.audioPlayed || this.audioReplay)) {
-        this.audio.play();
-        this.audioPlaying = true;
-        this.audio.addEventListener('end', function () {
-          _this2.audioPlaying = false;
-          _this2.audioPlayed = true;
-        });
-      }
       this.frameIndex++;
       this.frameIndex %= this.frameNums;
     }

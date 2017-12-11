@@ -2,7 +2,7 @@ var gulp = require('gulp'),
 plumber = require('gulp-plumber'),
 babel = require('gulp-babel'),
 webpack = require("gulp-webpack");
-gulp.task('es6', function() {
+gulp.task('build', function() {
   return gulp.src('src/**/*.js')
     .pipe(babel({
       "presets": ["es2015"]
