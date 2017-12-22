@@ -1,7 +1,7 @@
 {
   "name": "kyojs",
   "version": "1.0.0",
-  "description": "KYOJS",
+  "description": "zhan keng",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

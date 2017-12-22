@@ -46,11 +46,12 @@
 
 	__webpack_require__(1);
 	__webpack_require__(2);
-	__webpack_require__(4);
-	__webpack_require__(3);
 	__webpack_require__(5);
 	__webpack_require__(6);
-	module.exports = __webpack_require__(7);
+	__webpack_require__(3);
+	__webpack_require__(4);
+	__webpack_require__(7);
+	module.exports = __webpack_require__(8);
 
 
 /***/ }),
@@ -69,10 +70,15 @@
 
 	var _index2 = _interopRequireDefault(_index);
 
+	var _index3 = __webpack_require__(4);
+
+	var _index4 = _interopRequireDefault(_index3);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	window.kyo = {
-	  Loader: _index2.default
+	  Loader: _index2.default,
+	  UIComponents: _index4.default
 	};
 
 /***/ }),
@@ -97,7 +103,12 @@
 	    _classCallCheck(this, Loader);
 
 	    this.configs = configs;
-	    this.sources = { images: {}, animate: {}, video: {}, audio: {} };
+	    this.sources = {
+	      images: {},
+	      animates: {},
+	      videos: {},
+	      audios: {}
+	    };
 	    this.events = {};
 	  }
 
@@ -136,6 +147,21 @@
 	        _loop(i);
 	      }
 	    }
+	  }, {
+	    key: 'loadAnimates',
+	    value: function loadAnimates(sources) {
+	      var length = sources.length;
+	      var loaded = 0;
+	      var _this = this;
+	      for (var i = 0; i < length; i++) {
+	        this.sources.images[sources[i].name] = [];
+	        for (var j = 0, l = animates[i].urls.length; j < l; j++) {
+	          var _image = new Image();
+	          this.animates[sources[i].name].push(_image);
+	          _image.src = sources[i].urls[i];
+	        }
+	      }
+	    }
 
 	    // 删除某项资源
 
@@ -168,6 +194,20 @@
 /* 4 */
 /***/ (function(module, exports) {
 
+	"use strict";
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var UIComponents = function UIComponents() {
+	  _classCallCheck(this, UIComponents);
+
+	  this.components;
+	};
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
 	// 'use strict';
 	// const onTime = function() {
 	//
@@ -185,13 +225,13 @@
 	"use strict";
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 	"use strict";
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -279,7 +319,7 @@
 	exports.default = Action;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 	"use strict";

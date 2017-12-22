@@ -16,7 +16,12 @@ var Loader = function () {
     _classCallCheck(this, Loader);
 
     this.configs = configs;
-    this.sources = { images: {}, animate: {}, video: {}, audio: {} };
+    this.sources = {
+      images: {},
+      animates: {},
+      videos: {},
+      audios: {}
+    };
     this.events = {};
   }
 
@@ -53,6 +58,21 @@ var Loader = function () {
 
       for (var i = 0; i < length; i++) {
         _loop(i);
+      }
+    }
+  }, {
+    key: 'loadAnimates',
+    value: function loadAnimates(sources) {
+      var length = sources.length;
+      var loaded = 0;
+      var _this = this;
+      for (var i = 0; i < length; i++) {
+        this.sources.images[sources[i].name] = [];
+        for (var j = 0, l = animates[i].urls.length; j < l; j++) {
+          var _image = new Image();
+          this.animates[sources[i].name].push(_image);
+          _image.src = sources[i].urls[i];
+        }
       }
     }
 
